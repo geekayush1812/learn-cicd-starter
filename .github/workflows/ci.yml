@@ -20,25 +20,31 @@ jobs:
 
       - name: Run Tests
         run: go test -cover ./...
-   
-  style:
-    name: Style
-    runs-on: ubuntu-latest
 
-    steps:
-      - name: Check out code
-        uses: actions/checkout@v4
+      - name: Install gosec
+        run: go install github.com/securego/gosec/v2/cmd/gosec@latest
 
-      - name: Set up Go
-        uses: actions/setup-go@v4
-        with:
-          go-version: '1.20'
-      
-      - name: Run Formatting
-        run: test -z $(go fmt ./...)
+      - name: Security Tests
+        run: gosec ./...
+    
+    style:
+      name: Style
+      runs-on: ubuntu-latest
 
-      - name: Install Staticcheck
-        run: go install honnef.co/go/tools/cmd/staticcheck@latest
+      steps:
+        - name: Check out code
+          uses: actions/checkout@v4
 
-      - name: Run Staticcheck
-        run: staticcheck ./...
+        - name: Set up Go
+          uses: actions/setup-go@v4
+          with:
+            go-version: '1.20'
+        
+        - name: Run Formatting
+          run: test -z $(go fmt ./...)
+
+        - name: Install Staticcheck
+          run: go install honnef.co/go/tools/cmd/staticcheck@latest
+
+        - name: Run Staticcheck
+          run: staticcheck ./...
