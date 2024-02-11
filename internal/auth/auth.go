@@ -2,16 +2,11 @@ package auth
 
 import (
 	"errors"
-	"fmt"
 	"net/http"
 	"strings"
 )
 
 var ErrNoAuthHeaderIncluded = errors.New("no authorization header included")
-
-func unused() {
-	fmt.Println("this is unused function")
-}
 
 // GetAPIKey -
 func GetAPIKey(headers http.Header) (string, error) {
